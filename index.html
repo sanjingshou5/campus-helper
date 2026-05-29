@@ -162,24 +162,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <h3 class="page-title">校园学习服务</h3>
       <p class="page-desc">为你的学习之路保驾护航</p>
       <div class="tabs" data-tabgroup>
-        <button class="tab-btn on" data-tab="tab-schedule">课表查询</button>
-        <button class="tab-btn" data-tab="tab-library">图书馆</button>
-        <button class="tab-btn" data-tab="tab-exam">考试安排</button>
+        <button class="tab-btn on" onclick="switchTab(this,'tab-schedule')">课表查询</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-library')">图书馆</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-exam')">考试安排</button>
       </div>
       <div id="tab-schedule" class="tab-panel on">
-        <div class="svc-card" data-tip="📅|周一：高数(1-2节)、英语(3-4节)、体育(5-6节)；周二：线代(1-2节)、思修(3-4节)"><div class="svc-icon">📅</div><div class="svc-info"><div class="svc-name">本周课表</div><div class="svc-desc">查看本学期课程安排</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🏫|今日第3-4节空余教室：教2-301、教3-105、教5-202。推荐教3-105有空调。"><div class="svc-icon">🏫</div><div class="svc-info"><div class="svc-name">自习室查询</div><div class="svc-desc">实时查看空余自习室</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="⏰|你已设置明早8:00的课程提醒：《高等数学》教2-301，记得带课本和作业哦~"><div class="svc-icon">⏰</div><div class="svc-info"><div class="svc-name">上课提醒</div><div class="svc-desc">自定义课程闹钟提醒</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📅|周一：高数(1-2节)、英语(3-4节)、体育(5-6节)；周二：线代(1-2节)、思修(3-4节)"><div class="svc-icon">📅</div><div class="svc-info"><div class="svc-name">本周课表</div><div class="svc-desc">查看本学期课程安排</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🏫|今日第3-4节空余教室：教2-301、教3-105、教5-202。推荐教3-105有空调。"><div class="svc-icon">🏫</div><div class="svc-info"><div class="svc-name">自习室查询</div><div class="svc-desc">实时查看空余自习室</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="⏰|你已设置明早8:00的课程提醒：《高等数学》教2-301，记得带课本和作业哦~"><div class="svc-icon">⏰</div><div class="svc-info"><div class="svc-name">上课提醒</div><div class="svc-desc">自定义课程闹钟提醒</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-library" class="tab-panel">
-        <div class="svc-card" data-tip="📖|你当前借阅：《数据结构》(3月15日到期)、《Python编程》(4月2日到期)，请按时归还。"><div class="svc-icon">📖</div><div class="svc-info"><div class="svc-name">借阅记录</div><div class="svc-desc">查看当前借阅与到期提醒</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🔍|图书馆藏书查询：输入书名或作者即可搜索馆藏，支持预约借阅和跨校区调阅。"><div class="svc-icon">🔍</div><div class="svc-info"><div class="svc-name">馆藏检索</div><div class="svc-desc">搜索图书馆全部藏书</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🕐|图书馆开放时间：周一至周六 7:00-22:30，周日 8:00-21:00。"><div class="svc-icon">🕐</div><div class="svc-info"><div class="svc-name">开放时间</div><div class="svc-desc">主馆与分馆开放安排</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📖|你当前借阅：《数据结构》(3月15日到期)、《Python编程》(4月2日到期)，请按时归还。"><div class="svc-icon">📖</div><div class="svc-info"><div class="svc-name">借阅记录</div><div class="svc-desc">查看当前借阅与到期提醒</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🔍|图书馆藏书查询：输入书名或作者即可搜索馆藏，支持预约借阅和跨校区调阅。"><div class="svc-icon">🔍</div><div class="svc-info"><div class="svc-name">馆藏检索</div><div class="svc-desc">搜索图书馆全部藏书</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🕐|图书馆开放时间：周一至周六 7:00-22:30，周日 8:00-21:00。"><div class="svc-icon">🕐</div><div class="svc-info"><div class="svc-name">开放时间</div><div class="svc-desc">主馆与分馆开放安排</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-exam" class="tab-panel">
-        <div class="svc-card" data-tip="📝|2026年春季学期期末考试安排已发布，查看各科目考试时间、地点及座位号。"><div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">考试安排</div><div class="svc-desc">期末考试时间与地点</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="📊|本学期成绩已全部发布，绩点3.6，专业排名前15%。继续加油！"><div class="svc-icon">📊</div><div class="svc-info"><div class="svc-name">成绩查询</div><div class="svc-desc">查看各科成绩与绩点</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🎯|距离四级考试还有18天，今日建议完成一套真题+50个高频词汇。"><div class="svc-icon">🎯</div><div class="svc-info"><div class="svc-name">备考助手</div><div class="svc-desc">考试倒计时与备考计划</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📝|2026年春季学期期末考试安排已发布，查看各科目考试时间、地点及座位号。"><div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">考试安排</div><div class="svc-desc">期末考试时间与地点</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📊|本学期成绩已全部发布，绩点3.6，专业排名前15%。继续加油！"><div class="svc-icon">📊</div><div class="svc-info"><div class="svc-name">成绩查询</div><div class="svc-desc">查看各科成绩与绩点</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🎯|距离四级考试还有18天，今日建议完成一套真题+50个高频词汇。"><div class="svc-icon">🎯</div><div class="svc-info"><div class="svc-name">备考助手</div><div class="svc-desc">考试倒计时与备考计划</div></div><span class="svc-arrow">›</span></div>
       </div>
     </div>
   </div>
@@ -191,24 +191,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <h3 class="page-title">校园生活服务</h3>
       <p class="page-desc">校园日常所需，一站触达</p>
       <div class="tabs" data-tabgroup>
-        <button class="tab-btn on" data-tab="tab-food">餐饮生活</button>
-        <button class="tab-btn" data-tab="tab-dorm">宿舍服务</button>
-        <button class="tab-btn" data-tab="tab-other">更多服务</button>
+        <button class="tab-btn on" onclick="switchTab(this,'tab-food')">餐饮生活</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-dorm')">宿舍服务</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-other')">更多服务</button>
       </div>
       <div id="tab-food" class="tab-panel on">
-        <div class="svc-card" data-tip="🍽️|一食堂：自选快餐、兰州拉面；二食堂：麻辣香锅、水煮鱼；三食堂：西餐简餐、日式拉面。人均8-15元。"><div class="svc-icon">🍽️</div><div class="svc-info"><div class="svc-name">食堂推荐</div><div class="svc-desc">各食堂特色菜品一览</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🛒|校内商超：教育超市(东区)、全家便利店(西区)，营业时间7:00-23:00。"><div class="svc-icon">🛒</div><div class="svc-info"><div class="svc-name">校内商超</div><div class="svc-desc">超市便利店位置导航</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="📦|驿站地址：东区学生活动中心一楼，营业时间9:00-20:00。取件请携带校园卡。"><div class="svc-icon">📦</div><div class="svc-info"><div class="svc-name">校园快递</div><div class="svc-desc">快递收发与取件指引</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🍽️|一食堂：自选快餐、兰州拉面；二食堂：麻辣香锅、水煮鱼；三食堂：西餐简餐、日式拉面。人均8-15元。"><div class="svc-icon">🍽️</div><div class="svc-info"><div class="svc-name">食堂推荐</div><div class="svc-desc">各食堂特色菜品一览</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🛒|校内商超：教育超市(东区)、全家便利店(西区)，营业时间7:00-23:00。"><div class="svc-icon">🛒</div><div class="svc-info"><div class="svc-name">校内商超</div><div class="svc-desc">超市便利店位置导航</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📦|驿站地址：东区学生活动中心一楼，营业时间9:00-20:00。取件请携带校园卡。"><div class="svc-icon">📦</div><div class="svc-info"><div class="svc-name">校园快递</div><div class="svc-desc">快递收发与取件指引</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-dorm" class="tab-panel">
-        <div class="svc-card" data-tip="🔧|在线报修流程：选择报修类型→填写宿舍号→上传照片→提交。维修项目：水电、门窗、空调等。"><div class="svc-icon">🔧</div><div class="svc-info"><div class="svc-name">宿舍报修</div><div class="svc-desc">一键提交维修申请</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="💡|宿舍电费余额：32.5元，预估可用15天。支持在线充值，最低10元起。"><div class="svc-icon">💡</div><div class="svc-info"><div class="svc-name">水电费缴纳</div><div class="svc-desc">在线查询与充值缴费</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="📶|校园网：基础免费20G/月，高速包30G/20元/月。WiFi搜索Campus-WiFi，账号学号+密码。"><div class="svc-icon">📶</div><div class="svc-info"><div class="svc-name">校园网服务</div><div class="svc-desc">网络套餐与使用指南</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🔧|在线报修流程：选择报修类型→填写宿舍号→上传照片→提交。维修项目：水电、门窗、空调等。"><div class="svc-icon">🔧</div><div class="svc-info"><div class="svc-name">宿舍报修</div><div class="svc-desc">一键提交维修申请</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="💡|宿舍电费余额：32.5元，预估可用15天。支持在线充值，最低10元起。"><div class="svc-icon">💡</div><div class="svc-info"><div class="svc-name">水电费缴纳</div><div class="svc-desc">在线查询与充值缴费</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📶|校园网：基础免费20G/月，高速包30G/20元/月。WiFi搜索Campus-WiFi，账号学号+密码。"><div class="svc-icon">📶</div><div class="svc-info"><div class="svc-name">校园网服务</div><div class="svc-desc">网络套餐与使用指南</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-other" class="tab-panel">
-        <div class="svc-card" data-tip="🏥|校医院地址：东区体育馆北侧，门诊8:00-17:30，急诊24小时。电话：8888-6120"><div class="svc-icon">🏥</div><div class="svc-info"><div class="svc-name">校医院</div><div class="svc-desc">门诊时间与联系方式</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🏋️|体育馆开放：周一至周五 6:00-22:00，周末 7:00-21:00。健身、游泳、篮球均需预约。"><div class="svc-icon">🏋️</div><div class="svc-info"><div class="svc-name">运动场馆</div><div class="svc-desc">场馆预约与开放时间</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="☕|校内咖啡厅「悦读时光」位于图书馆一楼，提供咖啡、茶饮、简餐，自习好去处。"><div class="svc-icon">☕</div><div class="svc-info"><div class="svc-name">休闲空间</div><div class="svc-desc">咖啡厅与活动室指引</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🏥|校医院地址：东区体育馆北侧，门诊8:00-17:30，急诊24小时。电话：8888-6120"><div class="svc-icon">🏥</div><div class="svc-info"><div class="svc-name">校医院</div><div class="svc-desc">门诊时间与联系方式</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🏋️|体育馆开放：周一至周五 6:00-22:00，周末 7:00-21:00。健身、游泳、篮球均需预约。"><div class="svc-icon">🏋️</div><div class="svc-info"><div class="svc-name">运动场馆</div><div class="svc-desc">场馆预约与开放时间</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="☕|校内咖啡厅「悦读时光」位于图书馆一楼，提供咖啡、茶饮、简餐，自习好去处。"><div class="svc-icon">☕</div><div class="svc-info"><div class="svc-name">休闲空间</div><div class="svc-desc">咖啡厅与活动室指引</div></div><span class="svc-arrow">›</span></div>
       </div>
     </div>
   </div>
@@ -220,24 +220,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <h3 class="page-title">校园出行工具</h3>
       <p class="page-desc">校内校外，出行无忧</p>
       <div class="tabs" data-tabgroup>
-        <button class="tab-btn on" data-tab="tab-inner">校内出行</button>
-        <button class="tab-btn" data-tab="tab-outer">周边交通</button>
-        <button class="tab-btn" data-tab="tab-leave">请假指引</button>
+        <button class="tab-btn on" onclick="switchTab(this,'tab-inner')">校内出行</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-outer')">周边交通</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-leave')">请假指引</button>
       </div>
       <div id="tab-inner" class="tab-panel on">
-        <div class="svc-card" data-tip="🗺️|校内主要路线：东门→教学区→图书馆→食堂→宿舍区。步行约15分钟，骑行约8分钟。"><div class="svc-icon">🗺️</div><div class="svc-info"><div class="svc-name">校内路线图</div><div class="svc-desc">校园地图与导航指引</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🚌|校车时刻：东门↔地铁站，首班7:00/末班21:30，每30分钟一班。周末加密20分钟一班。"><div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">通勤车时刻</div><div class="svc-desc">校车实时班次查询</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🚪|各校门开放：东门6:00-23:00，西门7:00-22:00，南门24小时，北门7:00-20:00。"><div class="svc-icon">🚪</div><div class="svc-info"><div class="svc-name">校门开放时间</div><div class="svc-desc">各校门通行时段</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🗺️|校内主要路线：东门→教学区→图书馆→食堂→宿舍区。步行约15分钟，骑行约8分钟。"><div class="svc-icon">🗺️</div><div class="svc-info"><div class="svc-name">校内路线图</div><div class="svc-desc">校园地图与导航指引</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🚌|校车时刻：东门↔地铁站，首班7:00/末班21:30，每30分钟一班。周末加密20分钟一班。"><div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">通勤车时刻</div><div class="svc-desc">校车实时班次查询</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🚪|各校门开放：东门6:00-23:00，西门7:00-22:00，南门24小时，北门7:00-20:00。"><div class="svc-icon">🚪</div><div class="svc-info"><div class="svc-name">校门开放时间</div><div class="svc-desc">各校门通行时段</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-outer" class="tab-panel">
-        <div class="svc-card" data-tip="🚇|最近地铁：大学城站(2号线)，距东门800米步行10分钟，可直达市中心约25分钟。"><div class="svc-icon">🚇</div><div class="svc-info"><div class="svc-name">周边地铁</div><div class="svc-desc">地铁线路与换乘指引</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🚌|东门乘坐102路、305路、666路，可达市中心商圈、火车站和机场大巴站。"><div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">公交线路</div><div class="svc-desc">周边公交站点与线路</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="🚕|滴滴/高德打车至市中心约20-30元，共享单车遍布校园周边，骑行至地铁站约5分钟。"><div class="svc-icon">🚕</div><div class="svc-info"><div class="svc-name">网约车/共享单车</div><div class="svc-desc">常用出行方式参考</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🚇|最近地铁：大学城站(2号线)，距东门800米步行10分钟，可直达市中心约25分钟。"><div class="svc-icon">🚇</div><div class="svc-info"><div class="svc-name">周边地铁</div><div class="svc-desc">地铁线路与换乘指引</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🚌|东门乘坐102路、305路、666路，可达市中心商圈、火车站和机场大巴站。"><div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">公交线路</div><div class="svc-desc">周边公交站点与线路</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="🚕|滴滴/高德打车至市中心约20-30元，共享单车遍布校园周边，骑行至地铁站约5分钟。"><div class="svc-icon">🚕</div><div class="svc-info"><div class="svc-name">网约车/共享单车</div><div class="svc-desc">常用出行方式参考</div></div><span class="svc-arrow">›</span></div>
       </div>
       <div id="tab-leave" class="tab-panel">
-        <div class="svc-card" data-tip="📋|请假流程：在线申请→辅导员审批→学院盖章(≥3天需学院)→离校。请提前1天提交。"><div class="svc-icon">📋</div><div class="svc-info"><div class="svc-name">请假流程说明</div><div class="svc-desc">在线请假审批步骤</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="📝|离校登记：短时离校(≤1天)在线报备即可；长假(≥3天)需辅导员审批+家长知情同意。"><div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">离校登记</div><div class="svc-desc">短期与长假登记区分</div></div><span class="svc-arrow">›</span></div>
-        <div class="svc-card" data-tip="⚠️|安全提示：晚归请结伴而行，避免独自走偏僻路段。校园保卫处24小时：8888-6110"><div class="svc-icon">⚠️</div><div class="svc-info"><div class="svc-name">安全出行提示</div><div class="svc-desc">出行安全注意事项</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📋|请假流程：在线申请→辅导员审批→学院盖章(≥3天需学院)→离校。请提前1天提交。"><div class="svc-icon">📋</div><div class="svc-info"><div class="svc-name">请假流程说明</div><div class="svc-desc">在线请假审批步骤</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="📝|离校登记：短时离校(≤1天)在线报备即可；长假(≥3天)需辅导员审批+家长知情同意。"><div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">离校登记</div><div class="svc-desc">短期与长假登记区分</div></div><span class="svc-arrow">›</span></div>
+        <div class="svc-card" onclick="openTip(this)" data-tip="⚠️|安全提示：晚归请结伴而行，避免独自走偏僻路段。校园保卫处24小时：8888-6110"><div class="svc-icon">⚠️</div><div class="svc-info"><div class="svc-name">安全出行提示</div><div class="svc-desc">出行安全注意事项</div></div><span class="svc-arrow">›</span></div>
       </div>
     </div>
   </div>
@@ -295,64 +295,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   switchTo('splash');
 
   // ===== MODAL - GLOBAL for inline onclick =====
-  var modalOverlay=document.getElementById('modal-overlay');
   window.openModal=function(icon,text){
+    var overlay=document.getElementById('modal-overlay');
     document.getElementById('mIcon').textContent=icon;
     document.getElementById('mText').textContent=text;
-    modalOverlay.classList.add('on');
+    overlay.classList.add('on');
     document.body.style.overflow='hidden';
   };
-  function closeModal(){
-    modalOverlay.classList.remove('on');
+  // read data-tip from element (for inline onclick on svc-card)
+  window.openTip=function(el){
+    var tip=el.getAttribute('data-tip')||el.closest('[data-tip]').getAttribute('data-tip');
+    var parts=tip.split('|');
+    openModal(parts[0],parts[1]);
+  };
+  window.closeModal=function(){
+    var overlay=document.getElementById('modal-overlay');
+    overlay.classList.remove('on');
     document.body.style.overflow='';
-  }
-  document.getElementById('btnClose').addEventListener('click',closeModal);
-  modalOverlay.addEventListener('click',function(e){
+  };
+  var modalOverlay=document.getElementById('modal-overlay');
+  document.getElementById('btnClose').onclick=closeModal;
+  modalOverlay.onclick=function(e){
     if(e.target===modalOverlay) closeModal();
-  });
-  document.addEventListener('keydown',function(e){
+  };
+  document.onkeydown=function(e){
     if(e.key==='Escape') closeModal();
-  });
+  };
 
-  // ===== TIP CARDS (global, for svc-card data-tip) =====
-  document.addEventListener('click',function(e){
-    var svc=e.target.closest('.svc-card');
-    if(!svc) return;
-    var tip=svc.getAttribute('data-tip');
-    if(tip){
-      var parts=tip.split('|');
-      openModal(parts[0],parts[1]);
-    }
-  });
-
-  // ===== TAB SWITCHING =====
-  document.addEventListener('click',function(e){
-    var btn=e.target.closest('.tab-btn');
-    if(!btn) return;
-    var tabId=btn.getAttribute('data-tab');
-    if(!tabId) return;
-
-    // find parent tabs container
+  // ===== TAB SWITCHING (global for inline onclick) =====
+  window.switchTab=function(btn,tabId){
     var tabsGroup=btn.closest('[data-tabgroup]');
     if(!tabsGroup) return;
-
-    // deactivate all tabs in this group
     var tabBtns=tabsGroup.querySelectorAll('.tab-btn');
     for(var i=0;i<tabBtns.length;i++){tabBtns[i].classList.remove('on');}
     btn.classList.add('on');
-
-    // find the parent page
     var page=btn.closest('.page');
-    if(!page) page=document.body; // fallback
-
-    // hide all tab panels in this page
+    if(!page) page=document.getElementById('app');
     var panels=page.querySelectorAll('.tab-panel');
     for(var j=0;j<panels.length;j++){panels[j].classList.remove('on');}
-
-    // show target
     var target=document.getElementById(tabId);
     if(target) target.classList.add('on');
-  });
+  };
 
   // ===== BACK TO TOP =====
   var btnTop=document.getElementById('btnTop');
