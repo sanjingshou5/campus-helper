@@ -21,8 +21,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 #app{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden}
 
 /* Each page fills the app container */
-.page{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-/* No position:absolute - let display:none handle visibility */
+.page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+/* Hidden pages: invisible + no pointer events */
+.page.off{visibility:hidden;pointer-events:none;opacity:0}
 
 /* Splash */
 #page-splash{background:linear-gradient(160deg,#E8F5E9 0%,#C8E6C9 40%,#A5D6A7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
@@ -276,38 +277,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   var de=document.getElementById('todayDate');
   if(de) de.textContent='📅 今天是 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
 
-  // ===== PAGE SWITCHING (core) - GLOBAL for inline onclick =====
+  // ===== PAGE SWITCHING - GLOBAL for inline onclick =====
   window.switchTo=function(name){
     var pages=document.querySelectorAll('#app > .page');
     for(var i=0;i<pages.length;i++){
-      pages[i].style.display='none';
+      pages[i].classList.add('off');
     }
     var target=document.getElementById('page-'+name);
     if(target){
-      target.style.display='';
+      target.classList.remove('off');
       target.scrollTop=0;
     }
     updateTopBtn();
   };
 
-  // Init: only show splash
-  switchTo('splash');
+  // Init: hide all pages except splash
+  var allPages=document.querySelectorAll('#app > .page');
+  for(var i=0;i<allPages.length;i++){
+    if(allPages[i].id!=='page-splash') allPages[i].classList.add('off');
+  }
 
   // ===== MODAL - GLOBAL for inline onclick =====
   window.openModal=function(icon,text){
-    try{
-      var overlay=document.getElementById('modal-overlay');
-      if(!overlay){alert('no overlay');return;}
-      var mi=document.getElementById('mIcon');
-      var mt=document.getElementById('mText');
-      if(!mi||!mt){alert('no icon/text');return;}
-      mi.textContent=icon;
-      mt.textContent=text;
-      overlay.classList.add('on');
-      document.body.style.overflow='hidden';
-    }catch(e){
-      alert('modal error: '+e.message);
-    }
+    var overlay=document.getElementById('modal-overlay');
+    var mi=document.getElementById('mIcon');
+    var mt=document.getElementById('mText');
+    if(!overlay||!mi||!mt) return;
+    mi.textContent=icon;
+    mt.textContent=text;
+    overlay.classList.add('on');
   };
   // read data-tip from element (for inline onclick on svc-card)
   window.openTip=function(el){
@@ -346,23 +344,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   // ===== BACK TO TOP =====
   var btnTop=document.getElementById('btnTop');
-  btnTop.addEventListener('click',function(){
-    var page=document.querySelector('#app > .page[style*="display:"]');
-    if(!page || page.style.display==='none'){
-      // find visible page
+  if(btnTop){
+    btnTop.onclick=function(){
       var pages=document.querySelectorAll('#app > .page');
       for(var i=0;i<pages.length;i++){
-        if(pages[i].style.display!=='none'){page=pages[i];break;}
+        if(!pages[i].classList.contains('off')){pages[i].scrollTo({top:0,behavior:'smooth'});break;}
       }
-    }
-    if(page) page.scrollTo({top:0,behavior:'smooth'});
-  });
+    };
+  }
 
   function updateTopBtn(){
+    if(!btnTop) return;
     var pages=document.querySelectorAll('#app > .page');
     var visible=null;
     for(var i=0;i<pages.length;i++){
-      if(pages[i].style.display!=='none'){visible=pages[i];break;}
+      if(!pages[i].classList.contains('off')){visible=pages[i];break;}
     }
     if(visible && visible.scrollTop>300){
       btnTop.classList.add('on');
@@ -371,12 +367,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     }
   }
 
-  // Listen to scroll on the app container with capture
-  document.getElementById('app').addEventListener('scroll',updateTopBtn,true);
-  // Also listen on each page directly
-  var allPages=document.querySelectorAll('#app > .page');
-  for(var i=0;i<allPages.length;i++){
-    allPages[i].addEventListener('scroll',updateTopBtn);
+  // Bind scroll for back-to-top
+  var appEl=document.getElementById('app');
+  if(appEl) appEl.onscroll=updateTopBtn;
+  var pageEls=document.querySelectorAll('#app > .page');
+  for(var i=0;i<pageEls.length;i++){
+    if(pageEls[i]) pageEls[i].onscroll=updateTopBtn;
   }
 
 </script>
