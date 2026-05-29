@@ -6,8 +6,8 @@
 <title>校园助手 - 校园生活一站式服务平台</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;position:fixed}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7f6;color:#333}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7f6;color:#333;position:relative}
 :root{--primary:#4A9E6E;--primary-dark:#357A52;--accent:#FF8C42;--text:#333;--text-light:#888;--border:#e8ece9;--shadow:0 2px 12px rgba(0,0,0,.08);--radius:14px}
 
 /* Loading */
@@ -18,10 +18,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .loader-text{margin-top:18px;color:#4A9E6E;font-size:15px;letter-spacing:1px}
 
 /* App container */
-#app{width:100%;height:100%;position:relative}
+#app{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden}
 
 /* Each page fills the app container */
-.page{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 
 /* Splash */
 #page-splash{background:linear-gradient(160deg,#E8F5E9 0%,#C8E6C9 40%,#A5D6A7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
@@ -295,14 +295,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   // Init: only show splash
   showPage('splash');
 
-  // ===== BUTTON: Enter =====
+  // ===== BUTTON: Enter (using onclick for max mobile compat) =====
   var btnEnter=document.getElementById('btnEnter');
   if(btnEnter){
-    function enterApp(e){
+    var _entering=false;
+    btnEnter.onclick=function(){
+      if(_entering) return;
+      _entering=true;
       showPage('home');
-    }
-    btnEnter.addEventListener('click',enterApp);
-    btnEnter.addEventListener('touchend',enterApp);
+    };
+    btnEnter.ontouchend=function(){
+      if(_entering) return;
+      _entering=true;
+      showPage('home');
+    };
   }
 
   // ===== HOME GRID CARDS =====
