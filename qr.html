@@ -21,31 +21,31 @@ h2{color:#357A52;font-size:22px;margin-bottom:6px}
 </head>
 <body>
 <div class="card">
-  <h2>📱 扫码预览</h2>
-  <p class="sub">校园助手 H5 · 手机扫码打开</p>
+  <h2>📱 校园助手 H5</h2>
+  <p class="sub">扫描二维码即可预览</p>
   <div id="qrcode"></div>
   <div class="url-box" id="urlBox">https://sanjingshou5.github.io/campus-helper/</div>
   <button class="copy-btn" onclick="copyUrl()">📋 复制链接</button>
-  <p class="tips">请确保手机和电脑连接同一 WiFi<br>如果无法访问，请检查电脑防火墙设置</p>
+  <p class="tips">永久有效，任何设备浏览器均可打开</p>
 </div>
 
 <script>
-const url='https://sanjingshou5.github.io/campus-helper/';
+var url='https://sanjingshou5.github.io/campus-helper/';
 try{
   new QRCode(document.getElementById('qrcode'),{
     text:url,width:220,height:220,
     colorDark:'#357A52',colorLight:'#ffffff'
   });
 }catch(e){
-  document.getElementById('qrcode').innerHTML='<p style="color:red">二维码加载失败，请直接复制下方链接</p>';
+  document.getElementById('qrcode').innerHTML='<p style="color:red">二维码加载失败<br>请直接复制下方链接</p>';
 }
 
 function copyUrl(){
-  navigator.clipboard.writeText(url).then(()=>{
-    const btn=document.querySelector('.copy-btn');
-    btn.textContent='已复制!';
-    setTimeout(()=>btn.textContent='📋 复制链接',1500);
-  }).catch(()=>{
+  navigator.clipboard.writeText(url).then(function(){
+    var btn=document.querySelector('.copy-btn');
+    btn.textContent='✓ 已复制！';
+    setTimeout(function(){btn.textContent='📋 复制链接';},1500);
+  }).catch(function(){
     alert('复制失败，请手动复制链接');
   });
 }
