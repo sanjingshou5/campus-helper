@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>校园助手 - 校园生活一站式服务平台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f7f6;color:#333;overflow-x:hidden;max-width:100vw}
+:root{--primary:#4A9E6E;--primary-light:#6DBF8A;--primary-dark:#357A52;--accent:#FF8C42;--bg:#f5f7f6;--card:#fff;--text:#333;--text-light:#888;--border:#e8ece9;--shadow:0 2px 12px rgba(0,0,0,.08);--radius:14px}
+
+/* ============ LOADING ============ */
+#loading{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+#loading.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+.loader-text{margin-top:18px;color:var(--primary);font-size:15px;letter-spacing:1px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ PAGES ============ */
+.page{display:none;min-height:100vh;animation:fadeInUp .5s ease}
+.page.active{display:block}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ SPLASH ============ */
+.page.splash.active{display:flex}
+.splash{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,#E8F5E9 0%,#C8E6C9 40%,#A5D6A7 100%);position:relative;overflow:hidden}
+.splash::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(255,255,255,.25);border-radius:50%;animation:floatBubble 6s ease-in-out infinite}
+.splash::after{content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;background:rgba(255,255,255,.18);border-radius:50%;animation:floatBubble 8s ease-in-out 1s infinite}
+@keyframes floatBubble{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
+.splash-logo{width:90px;height:90px;background:#fff;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 30px rgba(74,158,110,.25);margin-bottom:28px;z-index:1;animation:logoPop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes logoPop{from{transform:scale(0) rotate(-10deg)}to{transform:scale(1) rotate(0)}}
+.splash h1{font-size:32px;font-weight:700;color:var(--primary-dark);z-index:1;letter-spacing:2px}
+.splash .subtitle{font-size:15px;color:#5B8C6A;margin-top:10px;z-index:1;letter-spacing:1px}
+.splash .splash-desc{font-size:13px;color:#7AAA8A;margin-top:20px;z-index:1;line-height:1.6}
+.splash .btn-enter{margin-top:36px;padding:14px 56px;background:var(--primary);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:600;letter-spacing:2px;cursor:pointer;position:relative;z-index:10;transition:all .3s;box-shadow:0 6px 20px rgba(74,158,110,.35)}
+.splash .btn-enter:hover{background:var(--primary-dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(74,158,110,.45)}
+.splash .btn-enter:active{transform:scale(.95)}
+
+/* ============ TOP BAR ============ */
+.topbar{position:sticky;top:0;z-index:100;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;padding:12px 16px;font-size:17px;font-weight:600;letter-spacing:1px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.topbar .btn-back{position:absolute;left:12px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:6px 10px}
+.topbar .btn-back:active{opacity:.7}
+
+/* ============ HOME PAGE ============ */
+.home-header{background:linear-gradient(160deg,#4A9E6E 0%,#5BBF85 100%);padding:24px 20px 30px;color:#fff;text-align:center;border-radius:0 0 28px 28px}
+.home-header h2{font-size:22px;font-weight:700;letter-spacing:1px}
+.home-header p{font-size:13px;opacity:.85;margin-top:6px;letter-spacing:.5px}
+.home-header .user-greeting{margin-top:14px;font-size:14px;opacity:.9}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px 16px;margin-top:-12px}
+.home-card{background:var(--card);border-radius:var(--radius);padding:20px 10px 16px;text-align:center;cursor:pointer;transition:all .25s;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.home-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13)}
+.home-card:active{transform:scale(.95)}
+.home-card .card-icon{font-size:34px;margin-bottom:8px;display:block;transition:transform .3s}
+.home-card:hover .card-icon{transform:scale(1.15)}
+.home-card .card-label{font-size:13px;font-weight:600;color:var(--text)}
+.home-card .card-badge{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px}
+
+/* notification bar */
+.notice-bar{display:flex;align-items:center;margin:0 16px;padding:10px 14px;background:#FFF8E1;border-radius:10px;font-size:12px;color:#B8860B;gap:8px;animation:pulse 2s ease-in-out infinite}
+.notice-bar .notice-icon{font-size:16px}
+.notice-bar .notice-text{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.8}}
+
+/* ============ SERVICE PAGES ============ */
+.service-page{padding:16px}
+.service-page .page-title{font-size:20px;font-weight:700;color:var(--primary-dark);margin-bottom:6px}
+.service-page .page-desc{font-size:13px;color:var(--text-light);margin-bottom:18px;line-height:1.5}
+
+/* Tabs */
+.tabs{display:flex;gap:0;margin-bottom:18px;background:var(--border);border-radius:10px;padding:3px}
+.tab-btn{flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:600;border:none;background:none;border-radius:8px;cursor:pointer;transition:all .3s;color:var(--text-light)}
+.tab-btn.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-btn:active{transform:scale(.96)}
+.tab-content{display:none;animation:fadeInUp .35s ease}
+.tab-content.active{display:block}
+
+/* Service card */
+.svc-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:14px}
+.svc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.13)}
+.svc-card:active{transform:scale(.98)}
+.svc-card .svc-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;background:#E8F5E9;flex-shrink:0}
+.svc-card .svc-info{flex:1}
+.svc-card .svc-name{font-size:15px;font-weight:600;color:var(--text)}
+.svc-card .svc-desc{font-size:12px;color:var(--text-light);margin-top:3px}
+.svc-card .svc-arrow{color:#ccc;font-size:18px}
+
+/* ============ MODAL ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;display:flex;align-items:center;justify-content:center;animation:fadeIn .25s ease;padding:20px}
+.modal-overlay.hide{display:none}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:#fff;border-radius:16px;padding:24px 20px;max-width:340px;width:100%;text-align:center;animation:modalPop .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes modalPop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-box .modal-icon{font-size:44px;margin-bottom:12px}
+.modal-box h3{font-size:18px;color:var(--primary-dark);margin-bottom:8px}
+.modal-box p{font-size:14px;color:#666;line-height:1.6;margin-bottom:18px}
+.modal-box .btn-close{display:inline-block;padding:10px 40px;background:var(--primary);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.modal-box .btn-close:active{transform:scale(.95);background:var(--primary-dark)}
+
+/* ============ BACK TO TOP ============ */
+.btn-top{position:fixed;bottom:24px;right:20px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;z-index:99;box-shadow:0 4px 16px rgba(74,158,110,.35);transition:all .3s;opacity:0;visibility:hidden;transform:translateY(10px)}
+.btn-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.btn-top:active{transform:scale(.9)}
+
+/* ============ ABOUT PAGE ============ */
+.about-page{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(180deg,#E8F5E9 0%,#f5f7f6 50%,#E8F5E9 100%)}
+.about-logo{width:80px;height:80px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 8px 30px rgba(74,158,110,.2);margin-bottom:20px}
+.about-page h2{font-size:22px;color:var(--primary-dark);margin-bottom:6px}
+.about-page .about-subtitle{font-size:13px;color:var(--text-light);margin-bottom:10px}
+.about-info{background:#fff;border-radius:var(--radius);padding:20px 24px;margin-top:20px;text-align:left;width:100%;max-width:360px;box-shadow:var(--shadow)}
+.about-info .info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.about-info .info-row:last-child{border:none}
+.about-info .info-label{color:var(--text-light)}
+.about-info .info-value{color:var(--text);font-weight:500}
+.about-page .thanks{font-size:14px;color:var(--primary);margin-top:20px;letter-spacing:1px;opacity:.8}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:420px){
+  .home-grid{grid-template-columns:repeat(3,1fr);max-width:420px;margin-left:auto;margin-right:auto}
+  .service-page{max-width:420px;margin:0 auto}
+}
+@media(max-width:340px){
+  .home-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .splash h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="loader"></div>
+  <p class="loader-text">校园助手加载中...</p>
+</div>
+
+<!-- ============ 1. 启动封面页 ============ -->
+<section id="page-splash" class="page splash active">
+  <div class="splash-logo">🎓</div>
+  <h1>校园助手</h1>
+  <p class="subtitle">校园生活一站式服务平台</p>
+  <p class="splash-desc">课表查询 · 自习室 · 食堂推荐<br>校园快递 · 通勤车 · 报修服务</p>
+  <button class="btn-enter" onclick="goPage('home')">开 始 使 用</button>
+</section>
+
+<!-- ============ 2. 功能导航首页 ============ -->
+<section id="page-home" class="page">
+  <div class="topbar">
+    <span>🏫 校园助手</span>
+  </div>
+  <div class="home-header">
+    <h2>👋 欢迎回来</h2>
+    <p>校园生活，一站搞定</p>
+    <p class="user-greeting">📅 今天是 <span id="todayDate"></span></p>
+  </div>
+
+  <div class="notice-bar" style="margin-top:16px" onclick="showModal('📢','校园网络将于本周六凌晨2:00-6:00进行升级维护，届时部分服务不可用，请提前做好准备。')">
+    <span class="notice-icon">📢</span>
+    <span class="notice-text">校园网络将于本周六凌晨进行升级维护...</span>
+  </div>
+
+  <div class="home-grid">
+    <div class="home-card" onclick="goPage('study')">
+      <span class="card-icon">📚</span>
+      <span class="card-label">学习服务</span>
+    </div>
+    <div class="home-card" onclick="goPage('life')">
+      <span class="card-icon">🏠</span>
+      <span class="card-label">生活服务</span>
+    </div>
+    <div class="home-card" onclick="goPage('transport')">
+      <span class="card-icon">🚌</span>
+      <span class="card-label">出行工具</span>
+    </div>
+    <div class="home-card" onclick="showModal('📅','课表查询功能已开放，支持按周查看课程安排，还可设置上课提醒哦！')">
+      <span class="card-icon">📅</span>
+      <span class="card-label">课表查询</span>
+      <span class="card-badge">热门</span>
+    </div>
+    <div class="home-card" onclick="showModal('🍜','今日推荐：二食堂二楼麻辣香锅、一食堂三楼水煮鱼，点击查看完整菜单→')">
+      <span class="card-icon">🍜</span>
+      <span class="card-label">今日食堂</span>
+    </div>
+    <div class="home-card" onclick="showModal('🔧','在线报修已受理，维修师傅会在24小时内联系您。紧急报修请拨打物业电话：8888-6666')">
+      <span class="card-icon">🔧</span>
+      <span class="card-label">一键报修</span>
+    </div>
+    <div class="home-card" onclick="showModal('📦','您的快递已到达校内菜鸟驿站，取件码：3-5-2018，请于48小时内领取。')">
+      <span class="card-icon">📦</span>
+      <span class="card-label">校园快递</span>
+    </div>
+    <div class="home-card" onclick="showModal('🚌','校车下一班发车时间：16:30，东门→地铁站，预计行程15分钟。')">
+      <span class="card-icon">🚌</span>
+      <span class="card-label">校车时刻</span>
+    </div>
+    <div class="home-card" onclick="goPage('about')">
+      <span class="card-icon">ℹ️</span>
+      <span class="card-label">关于我们</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. 校园学习服务页 ============ -->
+<section id="page-study" class="page">
+  <div class="topbar">
+    <button class="btn-back" onclick="goPage('home')">←</button>
+    <span>📚 学习服务</span>
+  </div>
+  <div class="service-page">
+    <h3 class="page-title">校园学习服务</h3>
+    <p class="page-desc">为你的学习之路保驾护航</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-schedule')">课表查询</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-library')">图书馆</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-exam')">考试安排</button>
+    </div>
+
+    <div id="tab-schedule" class="tab-content active">
+      <div class="svc-card" onclick="showModal('📅','周一：高数(1-2节)、英语(3-4节)、体育(5-6节)；周二：线代(1-2节)、思修(3-4节)... 完整课表请登录教务系统查看。')">
+        <div class="svc-icon">📅</div><div class="svc-info"><div class="svc-name">本周课表</div><div class="svc-desc">查看本学期课程安排</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🏫','空教室查询：今日第3-4节空余教室：教2-301、教3-105、教5-202。推荐教3-105，有空调且座位充足。')">
+        <div class="svc-icon">🏫</div><div class="svc-info"><div class="svc-name">自习室查询</div><div class="svc-desc">实时查看空余自习室</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('⏰','你已设置明早8:00的课程提醒：《高等数学》教2-301，记得带课本和作业哦~')">
+        <div class="svc-icon">⏰</div><div class="svc-info"><div class="svc-name">上课提醒</div><div class="svc-desc">自定义课程闹钟提醒</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-library" class="tab-content">
+      <div class="svc-card" onclick="showModal('📖','你当前借阅：《数据结构》(3月15日到期)、《Python编程》(4月2日到期)，请按时归还。')">
+        <div class="svc-icon">📖</div><div class="svc-info"><div class="svc-name">借阅记录</div><div class="svc-desc">查看当前借阅与到期提醒</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🔍','图书馆藏书查询：输入书名或作者即可搜索馆藏，支持预约借阅和跨校区调阅。')">
+        <div class="svc-icon">🔍</div><div class="svc-info"><div class="svc-name">馆藏检索</div><div class="svc-desc">搜索图书馆全部藏书</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🕐','图书馆开放时间：周一至周六 7:00-22:30，周日 8:00-21:00。节假日另行通知。')">
+        <div class="svc-icon">🕐</div><div class="svc-info"><div class="svc-name">开放时间</div><div class="svc-desc">主馆与分馆开放安排</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-exam" class="tab-content">
+      <div class="svc-card" onclick="showModal('📝','2026年春季学期期末考试安排已发布，查看各科目考试时间、地点及座位号。')">
+        <div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">考试安排</div><div class="svc-desc">期末考试时间与地点</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('📊','本学期成绩已全部发布，绩点3.6，专业排名前15%。继续加油！')">
+        <div class="svc-icon">📊</div><div class="svc-info"><div class="svc-name">成绩查询</div><div class="svc-desc">查看各科成绩与绩点</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🎯','距离四级考试还有18天，今日建议完成一套真题+50个高频词汇。')">
+        <div class="svc-icon">🎯</div><div class="svc-info"><div class="svc-name">备考助手</div><div class="svc-desc">考试倒计时与备考计划</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. 校园生活服务页 ============ -->
+<section id="page-life" class="page">
+  <div class="topbar">
+    <button class="btn-back" onclick="goPage('home')">←</button>
+    <span>🏠 生活服务</span>
+  </div>
+  <div class="service-page">
+    <h3 class="page-title">校园生活服务</h3>
+    <p class="page-desc">校园日常所需，一站触达</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-food')">餐饮生活</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-dorm')">宿舍服务</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-other')">更多服务</button>
+    </div>
+
+    <div id="tab-food" class="tab-content active">
+      <div class="svc-card" onclick="showModal('🍽️','一食堂：自选快餐、兰州拉面、麻辣烫；二食堂：麻辣香锅、水煮鱼、黄焖鸡；三食堂：西餐简餐、日式拉面、奶茶。人均8-15元。')">
+        <div class="svc-icon">🍽️</div><div class="svc-info"><div class="svc-name">食堂推荐</div><div class="svc-desc">各食堂特色菜品一览</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🛒','校内商超：教育超市(东区)、全家便利店(西区)，营业时间7:00-23:00，支持校园卡和移动支付。')">
+        <div class="svc-icon">🛒</div><div class="svc-info"><div class="svc-name">校内商超</div><div class="svc-desc">超市便利店位置导航</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('📦','驿站地址：东区学生活动中心一楼，营业时间9:00-20:00。取件请携带校园卡，寄件支持顺丰/中通/圆通。')">
+        <div class="svc-icon">📦</div><div class="svc-info"><div class="svc-name">校园快递</div><div class="svc-desc">快递收发与取件指引</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-dorm" class="tab-content">
+      <div class="svc-card" onclick="showModal('🔧','在线报修流程：选择报修类型→填写宿舍号→上传照片→提交。维修项目：水电、门窗、空调、热水器、网络等。')">
+        <div class="svc-icon">🔧</div><div class="svc-info"><div class="svc-name">宿舍报修</div><div class="svc-desc">一键提交维修申请</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('💡','宿舍电费余额：32.5元。预估可用15天。支持在线充值，最低充值10元，到账时间约5分钟。')">
+        <div class="svc-icon">💡</div><div class="svc-info"><div class="svc-name">水电费缴纳</div><div class="svc-desc">在线查询与充值缴费</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('📶','校园网套餐：基础免费20G/月，高速包30G/20元/月。连接方式：WiFi搜索Campus-WiFi，账号学号+密码。')">
+        <div class="svc-icon">📶</div><div class="svc-info"><div class="svc-name">校园网服务</div><div class="svc-desc">网络套餐与使用指南</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-other" class="tab-content">
+      <div class="svc-card" onclick="showModal('🏥','校医院地址：东区体育馆北侧，门诊时间8:00-17:30，急诊24小时。电话：8888-6120')">
+        <div class="svc-icon">🏥</div><div class="svc-info"><div class="svc-name">校医院</div><div class="svc-desc">门诊时间与联系方式</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🏋️','体育馆开放时间：周一至周五 6:00-22:00，周末 7:00-21:00。健身房、游泳馆、篮球场均需预约。')">
+        <div class="svc-icon">🏋️</div><div class="svc-info"><div class="svc-name">运动场馆</div><div class="svc-desc">场馆预约与开放时间</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('☕','校内咖啡厅「悦读时光」位于图书馆一楼，提供咖啡、茶饮、简餐，是自习和小组讨论的好去处。')">
+        <div class="svc-icon">☕</div><div class="svc-info"><div class="svc-name">休闲空间</div><div class="svc-desc">咖啡厅与活动室指引</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. 校园出行工具页 ============ -->
+<section id="page-transport" class="page">
+  <div class="topbar">
+    <button class="btn-back" onclick="goPage('home')">←</button>
+    <span>🚌 出行工具</span>
+  </div>
+  <div class="service-page">
+    <h3 class="page-title">校园出行工具</h3>
+    <p class="page-desc">校内校外，出行无忧</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-inner')">校内出行</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-outer')">周边交通</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-leave')">请假指引</button>
+    </div>
+
+    <div id="tab-inner" class="tab-content active">
+      <div class="svc-card" onclick="showModal('🗺️','校内主要路线：东门→教学区→图书馆→食堂→宿舍区。步行约15分钟覆盖全校，骑行约8分钟。')">
+        <div class="svc-icon">🗺️</div><div class="svc-info"><div class="svc-name">校内路线图</div><div class="svc-desc">校园地图与导航指引</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🚌','校车时刻表：东门↔地铁站，首班7:00/末班21:30，每30分钟一班。周末加密为20分钟一班。')">
+        <div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">通勤车时刻</div><div class="svc-desc">校车实时班次查询</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🚪','各校门开放时间：东门(正门)6:00-23:00，西门7:00-22:00，南门24小时开放，北门7:00-20:00。')">
+        <div class="svc-icon">🚪</div><div class="svc-info"><div class="svc-name">校门开放时间</div><div class="svc-desc">各校门通行时段</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-outer" class="tab-content">
+      <div class="svc-card" onclick="showModal('🚇','最近地铁站：大学城站(2号线)，距东门800米，步行约10分钟。可直达市中心(约25分钟)。')">
+        <div class="svc-icon">🚇</div><div class="svc-info"><div class="svc-name">周边地铁</div><div class="svc-desc">地铁线路与换乘指引</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🚌','校外公交：东门乘坐102路、305路、666路，可达市中心商圈、火车站和机场大巴站。')">
+        <div class="svc-icon">🚌</div><div class="svc-info"><div class="svc-name">公交线路</div><div class="svc-desc">周边公交站点与线路</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('🚕','常用出行：滴滴/高德打车至市中心约20-30元，共享单车遍布校园周边，骑行至地铁站约5分钟。')">
+        <div class="svc-icon">🚕</div><div class="svc-info"><div class="svc-name">网约车/共享单车</div><div class="svc-desc">常用出行方式参考</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+
+    <div id="tab-leave" class="tab-content">
+      <div class="svc-card" onclick="showModal('📋','请假流程：在线申请→辅导员审批→学院盖章(≥3天需学院)→离校。请提前1天提交申请。')">
+        <div class="svc-icon">📋</div><div class="svc-info"><div class="svc-name">请假流程说明</div><div class="svc-desc">在线请假审批步骤</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('📝','离校登记：短时离校(≤1天)在线报备即可；长假(≥3天)需辅导员审批+家长知情同意。')">
+        <div class="svc-icon">📝</div><div class="svc-info"><div class="svc-name">离校登记</div><div class="svc-desc">短期与长假登记区分</div></div><span class="svc-arrow">›</span>
+      </div>
+      <div class="svc-card" onclick="showModal('⚠️','安全提示：晚归请结伴而行，尽量避免独自走偏僻路段。校园保卫处24小时值班电话：8888-6110')">
+        <div class="svc-icon">⚠️</div><div class="svc-info"><div class="svc-name">安全出行提示</div><div class="svc-desc">出行安全注意事项</div></div><span class="svc-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. 关于 / 封底页 ============ -->
+<section id="page-about" class="page">
+  <div class="topbar">
+    <button class="btn-back" onclick="goPage('home')">←</button>
+    <span>ℹ️ 关于</span>
+  </div>
+  <div class="about-page">
+    <div class="about-logo">🎓</div>
+    <h2>校园助手</h2>
+    <p class="about-subtitle">v1.0.0 · 校园生活一站式服务平台</p>
+
+    <div class="about-info">
+      <div class="info-row"><span class="info-label">作品名称</span><span class="info-value">校园助手 H5</span></div>
+      <div class="info-row"><span class="info-label">作品类型</span><span class="info-value">校园服务轻应用</span></div>
+      <div class="info-row"><span class="info-label">适用对象</span><span class="info-value">在校大学生</span></div>
+      <div class="info-row"><span class="info-label">技术栈</span><span class="info-value">HTML5 + CSS3 + JS</span></div>
+      <div class="info-row"><span class="info-label">页面数量</span><span class="info-value">6 页</span></div>
+      <div class="info-row"><span class="info-label">动效种类</span><span class="info-value">6+ 种</span></div>
+    </div>
+
+    <p class="thanks">🙏 感谢浏览，祝学习生活愉快！</p>
+    <button class="btn-enter" style="margin-top:16px;padding:10px 36px;font-size:14px" onclick="goPage('home');scrollTo(0,0)">返回首页</button>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" class="modal-overlay hide" onclick="closeModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-icon" id="modalIcon"></div>
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <button class="btn-close" onclick="hideModal()">知道了</button>
+  </div>
+</div>
+
+<!-- Back to Top -->
+<button class="btn-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ===== 页面状态 =====
+let currentPage = 'splash';
+
+// ===== 初始化 =====
+window.addEventListener('DOMContentLoaded',()=>{
+  // loading
+  setTimeout(()=>{
+    document.getElementById('loading').classList.add('hide');
+  },1200);
+
+  // 日期
+  const d=new Date();
+  const dateEl=document.getElementById('todayDate');
+  if(dateEl) dateEl.textContent=
+    `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+
+  // 启动按钮 - 双重绑定确保可用
+  const btnEnter=document.querySelector('.splash .btn-enter');
+  if(btnEnter){
+    btnEnter.addEventListener('click',()=>goPage('home'));
+  }
+
+  // 监听滚动显示返回顶部
+  window.addEventListener('scroll',()=>{
+    const btn=document.getElementById('btnTop');
+    if(!btn) return;
+    if(window.scrollY>400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+});
+
+// ===== 页面跳转 =====
+function goPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('page-'+name);
+  if(target){
+    target.classList.add('active');
+    currentPage=name;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+// ===== Tab 切换 =====
+function switchTab(btn,contentId){
+  const tabs=btn.parentElement;
+  tabs.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const page=btn.closest('.page');
+  page.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const content=page.querySelector('#'+contentId);
+  if(content) content.classList.add('active');
+}
+
+// ===== Modal =====
+function showModal(icon,title,text){
+  document.getElementById('modalIcon').textContent=icon;
+  if(text){
+    document.getElementById('modalTitle').textContent=title;
+    document.getElementById('modalText').textContent=text;
+  }else{
+    document.getElementById('modalTitle').textContent='小贴士';
+    document.getElementById('modalText').textContent=title;
+  }
+  document.getElementById('modal').classList.remove('hide');
+  document.body.style.overflow='hidden';
+}
+function hideModal(){
+  document.getElementById('modal').classList.add('hide');
+  document.body.style.overflow='';
+}
+function closeModal(e){
+  if(e.target===document.getElementById('modal')) hideModal();
+}
+
+// ===== 键盘关闭 Modal =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') hideModal();
+});
+</script>
+</body>
+</html>

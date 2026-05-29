@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>扫码预览 - 校园助手</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,#E8F5E9,#C8E6C9);padding:20px}
+.card{background:#fff;border-radius:20px;padding:30px 24px;text-align:center;box-shadow:0 8px 30px rgba(74,158,110,.2);max-width:360px;width:100%}
+h2{color:#357A52;font-size:22px;margin-bottom:6px}
+.sub{color:#888;font-size:13px;margin-bottom:24px}
+#qrcode{display:flex;justify-content:center;margin:0 auto 20px}
+.url-box{background:#f5f7f6;padding:12px;border-radius:10px;word-break:break-all;font-size:13px;color:#4A9E6E;margin-bottom:12px;user-select:all}
+.copy-btn{padding:10px 32px;background:#4A9E6E;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.copy-btn:active{transform:scale(.95);background:#357A52}
+.tips{margin-top:16px;font-size:12px;color:#999;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>📱 扫码预览</h2>
+  <p class="sub">校园助手 H5 · 手机扫码打开</p>
+  <div id="qrcode"></div>
+  <div class="url-box" id="urlBox">http://10.16.67.46:3456/</div>
+  <button class="copy-btn" onclick="copyUrl()">📋 复制链接</button>
+  <p class="tips">请确保手机和电脑连接同一 WiFi<br>如果无法访问，请检查电脑防火墙设置</p>
+</div>
+
+<script>
+const url='http://10.16.67.46:3456/';
+try{
+  new QRCode(document.getElementById('qrcode'),{
+    text:url,width:220,height:220,
+    colorDark:'#357A52',colorLight:'#ffffff'
+  });
+}catch(e){
+  document.getElementById('qrcode').innerHTML='<p style="color:red">二维码加载失败，请直接复制下方链接</p>';
+}
+
+function copyUrl(){
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    btn.textContent='已复制!';
+    setTimeout(()=>btn.textContent='📋 复制链接',1500);
+  }).catch(()=>{
+    alert('复制失败，请手动复制链接');
+  });
+}
+</script>
+</body>
+</html>
