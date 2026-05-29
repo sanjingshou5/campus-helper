@@ -21,7 +21,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 #app{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden}
 
 /* Each page fills the app container */
-.page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.page{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+/* No position:absolute - let display:none handle visibility */
 
 /* Splash */
 #page-splash{background:linear-gradient(160deg,#E8F5E9 0%,#C8E6C9 40%,#A5D6A7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
@@ -126,7 +127,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     <h1>校园助手</h1>
     <p class="subtitle">校园生活一站式服务平台</p>
     <p class="splash-desc">课表查询 · 自习室 · 食堂推荐<br>校园快递 · 通勤车 · 报修服务</p>
-    <button class="btn-enter" id="btnEnter">开 始 使 用</button>
+    <button class="btn-enter" id="btnEnter" onclick="switchTo('home')">开 始 使 用</button>
   </div>
 
   <!-- ===== 2. 首页 ===== -->
@@ -137,26 +138,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <p>校园生活，一站搞定</p>
       <p style="margin-top:14px;font-size:14px;opacity:.9" id="todayDate"></p>
     </div>
-    <div class="notice-bar" id="noticeBar">
+    <div class="notice-bar" onclick="openModal('📢','校园网络将于本周六凌晨2:00-6:00进行升级维护，届时部分服务不可用，请提前做好准备。')">
       <span style="font-size:16px;flex-shrink:0">📢</span>
       <span class="notice-text">校园网络将于本周六凌晨进行升级维护...</span>
     </div>
     <div class="home-grid" id="homeGrid">
-      <div class="home-card" data-goto="study"><span class="card-icon">📚</span><span class="card-label">学习服务</span></div>
-      <div class="home-card" data-goto="life"><span class="card-icon">🏠</span><span class="card-label">生活服务</span></div>
-      <div class="home-card" data-goto="transport"><span class="card-icon">🚌</span><span class="card-label">出行工具</span></div>
-      <div class="home-card" data-tip="📅|课表查询功能已开放，支持按周查看课程安排，还可设置上课提醒哦！"><span class="card-icon">📅</span><span class="card-label">课表查询</span><span class="card-badge">热门</span></div>
-      <div class="home-card" data-tip="🍜|今日推荐：二食堂二楼麻辣香锅、一食堂三楼水煮鱼！"><span class="card-icon">🍜</span><span class="card-label">今日食堂</span></div>
-      <div class="home-card" data-tip="🔧|在线报修已受理，维修师傅会在24小时内联系您。紧急报修请拨打物业电话。"><span class="card-icon">🔧</span><span class="card-label">一键报修</span></div>
-      <div class="home-card" data-tip="📦|您的快递已到达校内菜鸟驿站，取件码：3-5-2018，请于48小时内领取。"><span class="card-icon">📦</span><span class="card-label">校园快递</span></div>
-      <div class="home-card" data-tip="🚌|校车下一班发车时间：16:30，东门→地铁站，预计行程15分钟。"><span class="card-icon">🚌</span><span class="card-label">校车时刻</span></div>
-      <div class="home-card" data-goto="about"><span class="card-icon">ℹ️</span><span class="card-label">关于我们</span></div>
+      <div class="home-card" onclick="switchTo('study')"><span class="card-icon">📚</span><span class="card-label">学习服务</span></div>
+      <div class="home-card" onclick="switchTo('life')"><span class="card-icon">🏠</span><span class="card-label">生活服务</span></div>
+      <div class="home-card" onclick="switchTo('transport')"><span class="card-icon">🚌</span><span class="card-label">出行工具</span></div>
+      <div class="home-card" onclick="openModal('📅','课表查询功能已开放，支持按周查看课程安排，还可设置上课提醒哦！')"><span class="card-icon">📅</span><span class="card-label">课表查询</span><span class="card-badge">热门</span></div>
+      <div class="home-card" onclick="openModal('🍜','今日推荐：二食堂二楼麻辣香锅、一食堂三楼水煮鱼！')"><span class="card-icon">🍜</span><span class="card-label">今日食堂</span></div>
+      <div class="home-card" onclick="openModal('🔧','在线报修已受理，维修师傅会在24小时内联系您。紧急报修请拨打物业电话。')"><span class="card-icon">🔧</span><span class="card-label">一键报修</span></div>
+      <div class="home-card" onclick="openModal('📦','您的快递已到达校内菜鸟驿站，取件码：3-5-2018，请于48小时内领取。')"><span class="card-icon">📦</span><span class="card-label">校园快递</span></div>
+      <div class="home-card" onclick="openModal('🚌','校车下一班发车时间：16:30，东门→地铁站，预计行程15分钟。')"><span class="card-icon">🚌</span><span class="card-label">校车时刻</span></div>
+      <div class="home-card" onclick="switchTo('about')"><span class="card-icon">ℹ️</span><span class="card-label">关于我们</span></div>
     </div>
   </div>
 
   <!-- ===== 3. 学习服务 ===== -->
   <div id="page-study" class="page">
-    <div class="topbar"><button class="btn-back" data-back>←</button><span>📚 学习服务</span></div>
+    <div class="topbar"><button class="btn-back" onclick="switchTo('home')">←</button><span>📚 学习服务</span></div>
     <div class="service-inner">
       <h3 class="page-title">校园学习服务</h3>
       <p class="page-desc">为你的学习之路保驾护航</p>
@@ -185,7 +186,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <!-- ===== 4. 生活服务 ===== -->
   <div id="page-life" class="page">
-    <div class="topbar"><button class="btn-back" data-back>←</button><span>🏠 生活服务</span></div>
+    <div class="topbar"><button class="btn-back" onclick="switchTo('home')">←</button><span>🏠 生活服务</span></div>
     <div class="service-inner">
       <h3 class="page-title">校园生活服务</h3>
       <p class="page-desc">校园日常所需，一站触达</p>
@@ -214,7 +215,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <!-- ===== 5. 出行工具 ===== -->
   <div id="page-transport" class="page">
-    <div class="topbar"><button class="btn-back" data-back>←</button><span>🚌 出行工具</span></div>
+    <div class="topbar"><button class="btn-back" onclick="switchTo('home')">←</button><span>🚌 出行工具</span></div>
     <div class="service-inner">
       <h3 class="page-title">校园出行工具</h3>
       <p class="page-desc">校内校外，出行无忧</p>
@@ -243,7 +244,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   <!-- ===== 6. 关于 ===== -->
   <div id="page-about" class="page">
-    <div class="topbar"><button class="btn-back" data-back>←</button><span>ℹ️ 关于</span></div>
+    <div class="topbar"><button class="btn-back" onclick="switchTo('home')">←</button><span>ℹ️ 关于</span></div>
     <div style="text-align:center;padding:40px 20px;background:linear-gradient(180deg,#E8F5E9,#f5f7f6 50%,#E8F5E9);min-height:100%">
       <div class="about-logo">🎓</div>
       <h2 style="font-size:22px;color:#357A52;margin-bottom:6px">校园助手</h2>
@@ -257,7 +258,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
         <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:13px"><span style="color:#888">动效种类</span><span style="font-weight:500">6+ 种</span></div>
       </div>
       <p style="font-size:14px;color:#4A9E6E;margin-top:20px;opacity:.8">🙏 感谢浏览，祝学习生活愉快！</p>
-      <button class="btn-enter" style="margin-top:16px;padding:10px 36px;font-size:14px;background:#4A9E6E;color:#fff;border:none;border-radius:50px;font-weight:600;cursor:pointer" id="btnGoHome">返回首页</button>
+      <button class="btn-enter" style="margin-top:16px;padding:10px 36px;font-size:14px;background:#4A9E6E;color:#fff;border:none;border-radius:50px;font-weight:600;cursor:pointer" onclick="switchTo('home')">返回首页</button>
     </div>
   </div>
 
@@ -276,9 +277,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   var de=document.getElementById('todayDate');
   if(de) de.textContent='📅 今天是 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
 
-  // ===== PAGE SWITCHING (core) =====
-  // Hide all pages except the one specified
-  function showPage(name){
+  // ===== PAGE SWITCHING (core) - GLOBAL for inline onclick =====
+  window.switchTo=function(name){
     var pages=document.querySelectorAll('#app > .page');
     for(var i=0;i<pages.length;i++){
       pages[i].style.display='none';
@@ -288,77 +288,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       target.style.display='';
       target.scrollTop=0;
     }
-    // Update back-to-top
     updateTopBtn();
-  }
+  };
 
   // Init: only show splash
-  showPage('splash');
+  switchTo('splash');
 
-  // ===== BUTTON: Enter (using onclick for max mobile compat) =====
-  var btnEnter=document.getElementById('btnEnter');
-  if(btnEnter){
-    var _entering=false;
-    btnEnter.onclick=function(){
-      if(_entering) return;
-      _entering=true;
-      showPage('home');
-    };
-    btnEnter.ontouchend=function(){
-      if(_entering) return;
-      _entering=true;
-      showPage('home');
-    };
-  }
-
-  // ===== HOME GRID CARDS =====
-  var grid=document.getElementById('homeGrid');
-  if(grid){
-    grid.addEventListener('click',function(e){
-      var card=e.target.closest('.home-card');
-      if(!card) return;
-
-      // data-goto: navigate to page
-      var go=card.getAttribute('data-goto');
-      if(go){
-        showPage(go);
-        return;
-      }
-
-      // data-tip: show modal
-      var tip=card.getAttribute('data-tip');
-      if(tip){
-        var parts=tip.split('|');
-        openModal(parts[0],parts[1]);
-      }
-    });
-  }
-
-  // ===== BACK BUTTONS (click + touchend for mobile) =====
-  document.addEventListener('click',onBackClick);
-  document.addEventListener('touchend',onBackClick);
-  function onBackClick(e){
-    if(e.target.hasAttribute('data-back')||e.target.closest('[data-back]')){
-      showPage('home');
-    }
-  }
-
-  // ===== ABOUT: return home =====
-  var btnGoHome=document.getElementById('btnGoHome');
-  if(btnGoHome){
-    function goHome(){showPage('home');}
-    btnGoHome.addEventListener('click',goHome);
-    btnGoHome.addEventListener('touchend',goHome);
-  }
-
-  // ===== MODAL =====
+  // ===== MODAL - GLOBAL for inline onclick =====
   var modalOverlay=document.getElementById('modal-overlay');
-  function openModal(icon,text){
+  window.openModal=function(icon,text){
     document.getElementById('mIcon').textContent=icon;
     document.getElementById('mText').textContent=text;
     modalOverlay.classList.add('on');
     document.body.style.overflow='hidden';
-  }
+  };
   function closeModal(){
     modalOverlay.classList.remove('on');
     document.body.style.overflow='';
@@ -381,14 +324,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       openModal(parts[0],parts[1]);
     }
   });
-
-  // ===== NOTICE BAR =====
-  var nb=document.getElementById('noticeBar');
-  if(nb){
-    nb.addEventListener('click',function(){
-      openModal('📢','校园网络将于本周六凌晨2:00-6:00进行升级维护，届时部分服务不可用，请提前做好准备。');
-    });
-  }
 
   // ===== TAB SWITCHING =====
   document.addEventListener('click',function(e){
