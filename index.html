@@ -295,11 +295,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
   // ===== MODAL - GLOBAL for inline onclick =====
   window.openModal=function(icon,text){
-    var overlay=document.getElementById('modal-overlay');
-    document.getElementById('mIcon').textContent=icon;
-    document.getElementById('mText').textContent=text;
-    overlay.classList.add('on');
-    document.body.style.overflow='hidden';
+    try{
+      var overlay=document.getElementById('modal-overlay');
+      if(!overlay){alert('no overlay');return;}
+      var mi=document.getElementById('mIcon');
+      var mt=document.getElementById('mText');
+      if(!mi||!mt){alert('no icon/text');return;}
+      mi.textContent=icon;
+      mt.textContent=text;
+      overlay.classList.add('on');
+      document.body.style.overflow='hidden';
+    }catch(e){
+      alert('modal error: '+e.message);
+    }
   };
   // read data-tip from element (for inline onclick on svc-card)
   window.openTip=function(el){
