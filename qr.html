@@ -24,13 +24,13 @@ h2{color:#357A52;font-size:22px;margin-bottom:6px}
   <h2>📱 扫码预览</h2>
   <p class="sub">校园助手 H5 · 手机扫码打开</p>
   <div id="qrcode"></div>
-  <div class="url-box" id="urlBox">http://10.16.67.46:3456/</div>
+  <div class="url-box" id="urlBox">https://sanjingshou5.github.io/campus-helper/</div>
   <button class="copy-btn" onclick="copyUrl()">📋 复制链接</button>
   <p class="tips">请确保手机和电脑连接同一 WiFi<br>如果无法访问，请检查电脑防火墙设置</p>
 </div>
 
 <script>
-const url='http://10.16.67.46:3456/';
+const url='https://sanjingshou5.github.io/campus-helper/';
 try{
   new QRCode(document.getElementById('qrcode'),{
     text:url,width:220,height:220,
